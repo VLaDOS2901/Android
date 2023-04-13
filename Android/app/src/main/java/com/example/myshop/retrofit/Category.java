@@ -3,7 +3,7 @@ package com.example.myshop.retrofit;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Post {
+public class Category {
     @SerializedName("id")
     @Expose
     private int id;
@@ -38,4 +38,3 @@ public class Post {
         this.name = title;
     }
 }
-
