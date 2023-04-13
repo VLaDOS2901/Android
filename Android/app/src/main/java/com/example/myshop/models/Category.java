@@ -1,4 +1,4 @@
-package com.example.myshop.retrofit;
+package com.example.myshop.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

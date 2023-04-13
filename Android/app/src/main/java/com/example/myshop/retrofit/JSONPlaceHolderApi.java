@@ -1,7 +1,6 @@
 package com.example.myshop.retrofit;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.example.myshop.models.Category;
 
 import java.util.List;
 
