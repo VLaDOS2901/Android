@@ -3,6 +3,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using WebShop.Data;
+using WebShop.Mapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +14,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<AndroidDbContext>();
+builder.Services.AddAutoMapper(typeof(AppMapProfile));
+
+builder.Services.AddDbContext<AppEFContext>(options =>
+	options.UseNpgsql(builder.Configuration.GetConnectionString("MyConnectionDB")));
 //string connectionStr = builder.Configuration.GetConnectionString("NeonTech");
 //builder.Services.AddDbContext<AndroidDbContext>(options => options.UseNpgsql(connectionStr));
 
@@ -40,5 +44,6 @@ app.UseStaticFiles(new StaticFileOptions
 app.UseAuthorization();
 
 app.MapControllers();
+app.SeedData();
 
 app.Run();

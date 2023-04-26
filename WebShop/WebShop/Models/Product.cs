@@ -4,7 +4,7 @@ namespace WebShop.Models
 {
 	public class Product
 	{
-		[System.ComponentModel.DataAnnotations.Key]
+		//[System.ComponentModel.DataAnnotations.Key]
 		public int id { get; set; }
 		public string name { get; set; }
 		public float price { get; set; }
