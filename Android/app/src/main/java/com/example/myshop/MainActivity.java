@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myshop.application.HomeApplication;
 import com.example.myshop.category.CategoriesAdapter;
-import com.example.myshop.constants.Urls;
+import com.example.myshop.models.constants.Urls;
 import com.example.myshop.dto.category.CategoryItemDTO;
 import com.example.myshop.service.CategoryNetwork;
 
@@ -23,7 +23,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     CategoriesAdapter adapter;
     RecyclerView rc;
@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<List<CategoryItemDTO>> call, Throwable t) {
-
                     }
                 });
     }

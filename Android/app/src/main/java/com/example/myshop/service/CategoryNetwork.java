@@ -1,6 +1,6 @@
 package com.example.myshop.service;
 
-import com.example.myshop.constants.Urls;
+import com.example.myshop.models.constants.Urls;
 import com.example.myshop.network.CategoriesApi;
 
 import java.util.concurrent.TimeUnit;

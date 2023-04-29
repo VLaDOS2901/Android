@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myshop.R;
 import com.example.myshop.application.HomeApplication;
-import com.example.myshop.constants.Urls;
+import com.example.myshop.models.constants.Urls;
 import com.example.myshop.dto.category.CategoryItemDTO;
 
 import java.util.List;
