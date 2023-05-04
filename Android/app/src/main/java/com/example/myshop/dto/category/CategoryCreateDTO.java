@@ -1,5 +1,5 @@
 package com.example.myshop.dto.category;
-
+//DTO для категорії, яка створюється
 public class CategoryCreateDTO {
     private String name;
     private String imageBase64;

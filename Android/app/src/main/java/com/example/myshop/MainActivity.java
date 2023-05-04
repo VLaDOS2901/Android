@@ -32,14 +32,14 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //Показуємо базову картинку
         ImageView avatar = (ImageView)findViewById(R.id.myImage);
         String url = Urls.BASE+"/images/3.jpg";
         Glide.with(HomeApplication.getAppContext())
                 .load(url)
                 .apply(new RequestOptions().override(600))
                 .into(avatar);
-
+        //налаштовуємо RecyclerView
         rc = findViewById(R.id.rcvCategories);
         rc.setHasFixedSize(true);
         rc.setLayoutManager(new GridLayoutManager(this, 2, RecyclerView.VERTICAL, false));
@@ -49,6 +49,7 @@ public class MainActivity extends BaseActivity {
     }
 
     void requestServer() {
+        //отримуємо весь список категорій
         CategoryNetwork
                 .getInstance()
                 .getJsonApi()
@@ -57,7 +58,9 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void onResponse(Call<List<CategoryItemDTO>> call, Response<List<CategoryItemDTO>> response) {
                         List<CategoryItemDTO> list = response.body();
+                        //встановлюємо список в адаптер
                         adapter = new CategoriesAdapter(list);
+                        //відображаємо всі категорії
                         rc.setAdapter(adapter);
                     }
 

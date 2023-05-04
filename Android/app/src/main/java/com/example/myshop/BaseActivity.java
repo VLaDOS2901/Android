@@ -17,6 +17,7 @@ public class BaseActivity  extends AppCompatActivity {
         inflater.inflate(R.menu.menu_main, menu);
         return true;
     }
+    //Метод, який відповідає за перехід між сторінками навігаційного меню
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;

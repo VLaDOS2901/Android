@@ -35,7 +35,7 @@ public class CategoryCreateActivity extends BaseActivity {
     TextInputEditText txtCategoryName;
     TextInputEditText txtCategoryPriotity;
     TextInputEditText txtCategoryDescription;
-
+    //Ініціалізуємо змінні
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,12 +45,13 @@ public class CategoryCreateActivity extends BaseActivity {
         txtCategoryPriotity=findViewById(R.id.txtCategoryPriority);
         txtCategoryDescription=findViewById(R.id.txtCategoryDescription);
     }
-
+    //action на кнопку вибору фотографії
     public void onClickSelectImage(View view) {
+        //викликаємо вікно вибору фотографії
         Intent intent = new Intent(this, ChangeImageActivity.class);
         startActivityForResult(intent, SELECT_IMAGE_RESULT);
     }
-
+    //отримуємо вибрану фотографію і встановлюємо її url
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -59,42 +60,58 @@ public class CategoryCreateActivity extends BaseActivity {
             imgSelectImage.setImageURI(uri);
         }
     }
-
+    //Створюємо нову категорію
     public void onClickSave(View view) {
+        //Створюємо об'єкт та встановлюємо в нього значення
         CategoryCreateDTO model = new CategoryCreateDTO();
         model.setName(txtCategoryName.getText().toString());
         model.setPriority(Integer.parseInt(txtCategoryPriotity.getText().toString()));
         model.setDescription(txtCategoryDescription.getText().toString());
         model.setImageBase64(uriGetBase64(uri));
-
-        CategoryNetwork.getInstance()
-                .getJsonApi()
-                .create(model)
-                .enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        Intent intent = new Intent(CategoryCreateActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-
-                    }
-                });
-
+        //перевіряємо чи поля не пусті
+        if(validate())
+        {
+            CategoryNetwork.getInstance()
+                    .getJsonApi()
+                    .create(model)
+                    .enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            Intent intent = new Intent(CategoryCreateActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                        }
+                    });
+        }
     }
-
+    //Метод валідації
+    public boolean validate(){
+        if(txtCategoryName.getText().toString().trim().isEmpty())
+            return false;
+        if (txtCategoryPriotity.getText().toString().trim().isEmpty())
+            return false;
+        if (txtCategoryDescription.getText().toString().trim().isEmpty())
+            return false;
+        if (uriGetBase64(uri).trim().isEmpty())
+            return false;
+        return  true;
+    }
+    //Метод перетворення uri в base64
     private String uriGetBase64(Uri uri) {
         try {
             Bitmap bitmap=null;
+            //Перевіряємо чи вдається отриати зображення
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
             } catch(IOException e) {
                 e.printStackTrace();
             }
+            //зображення перетворюється в масив байтів
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            // масив байтів стискається у форматі JPEG
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
             byte[] byteArr = bytes.toByteArray();
             return Base64.encodeToString(byteArr, Base64.DEFAULT);

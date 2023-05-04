@@ -1,5 +1,5 @@
 package com.example.myshop.dto.category;
-
+//DTO для категорії, яка відображається
 public class CategoryItemDTO {
     private int id;
     private String name;

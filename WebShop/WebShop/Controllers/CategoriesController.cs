@@ -50,6 +50,41 @@ namespace WebShop.Controllers
 				return BadRequest(new { error = ex.Message });
 			}
 		}
+		[HttpDelete("delete")]
+		public async Task<IActionResult> Delete(int id)
+		{
+			try
+			{
+				CategoryEntity model = _appEFContext.Categories
+				.Where(x => x.Id == id)
+				.OrderBy(x => x.Priority)
+				.Last();
+				_appEFContext.Categories.Remove(model);
+				_appEFContext.SaveChangesAsync();
+				return Ok("Item deleted");
+			}
+			catch (Exception ex)
+			{
+
+				return BadRequest(new { error = ex.Message });
+			}
+		}
+		[HttpPut("edit/{id}")]
+		public async Task<IActionResult> Edit(int id, [FromBody] CategoryCreateItemVM model)
+		{
+			try
+			{
+				var cat = await _appEFContext.Categories.FindAsync(id);
+				_mapper.Map(model, cat);
+				await _appEFContext.SaveChangesAsync();
+				return Ok("Saved successfully");
+			}
+			catch (Exception ex)
+			{
+
+				return BadRequest(new { error = ex.Message });
+			}
+		}
 	}
 
 }

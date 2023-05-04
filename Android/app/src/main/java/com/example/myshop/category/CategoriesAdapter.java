@@ -23,7 +23,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoryCardViewHold
     public CategoriesAdapter(List<CategoryItemDTO> categories) {
         this.categories = categories;
     }
-
+    //створюємо і повертаємо новий об'єкт CategoryCardViewHolder
     @NonNull
     @Override
     public CategoryCardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -32,7 +32,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoryCardViewHold
                 .inflate(R.layout.category_view, parent, false);
         return new CategoryCardViewHolder(view);
     }
-
+    //заповнюємо дані в CategoryCardViewHolder
     @Override
     public void onBindViewHolder(@NonNull CategoryCardViewHolder holder, int position) {
         if(categories!=null && position<categories.size())
@@ -46,7 +46,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoryCardViewHold
                     .into(holder.getCategoryImage());
         }
     }
-
+    //повертаємо кількість елементів у списку категорій.
     @Override
     public int getItemCount() {
         return categories.size();

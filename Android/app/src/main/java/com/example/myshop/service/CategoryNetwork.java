@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
+//Ініціалізація та створення об'єкту Retrofit
 public class CategoryNetwork {
     private static CategoryNetwork instance;
     private Retrofit retrofit;

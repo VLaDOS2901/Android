@@ -13,7 +13,7 @@ public class CategoryCardViewHolder extends RecyclerView.ViewHolder {
     private ImageView categoryImage;
     private TextView categoryName;
 
-
+    //отримуємо та встановлюємо данні в ImageView та TextView
     public CategoryCardViewHolder(@NonNull View itemView) {
         super(itemView);
         categoryName=itemView.findViewById(R.id.categoryName);

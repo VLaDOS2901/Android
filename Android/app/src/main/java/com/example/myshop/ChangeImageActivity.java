@@ -24,13 +24,13 @@ public class ChangeImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_image);
         cropView = findViewById(R.id.cropView);
-
+        //вибираємо зображення з галереї девайса
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Обрати фото"), PICK_IMAGE);
     }
-
+    //перевіряємо результат отриманий із зображення, в разі успіху відкрити вікно обрізання фотографії
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -46,20 +46,25 @@ public class ChangeImageActivity extends AppCompatActivity {
             finish();
     }
 
-
+    //закриваємо activity
     public void onClickCancel(View view) {
         finish();
     }
+    //повертаємо зображення вліво
     public void onClickLeft(View view) {
         cropView.setRotation(cropView.getRotation()-90);
     }
+    //повертаємо зображення вправо
     public void onClickRight(View view) {
         cropView.setRotation(cropView.getRotation()+90);
     }
+    //обрізати зображення
     public void onClickCrop(View view) {
+        //отримуємо зображення
         String fileTemp = java.util.UUID.randomUUID().toString();
         Bitmap croppedBitmap = cropView.getOutput();
         Matrix matrix = new Matrix();
+        //повертаємо зображення у відповідну сторону
         matrix.postRotate(cropView.getRotation());
         Bitmap rotatedBitmap = Bitmap.createBitmap(croppedBitmap, 0, 0, croppedBitmap.getWidth(), croppedBitmap.getHeight(), matrix, true);
 
