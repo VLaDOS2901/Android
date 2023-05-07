@@ -1,26 +1,37 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using WebShop.Data.Entities;
+using WebShop.Data.Entities.Identity;
 using WebShop.Models;
 
 namespace WebShop.Data
 {
-	public class AppEFContext : DbContext
+	public class AppEFContext : IdentityDbContext<UserEntity, RoleEntity, int,
+		IdentityUserClaim<int>, UserRoleEntity, IdentityUserLogin<int>,
+		IdentityRoleClaim<int>, IdentityUserToken<int>>
 	{
-		public AppEFContext() { }
-		public AppEFContext(DbContextOptions<AppEFContext> options) : base(options) { }
+		public AppEFContext(DbContextOptions<AppEFContext> options) : base(options)
+		{ }
 		public DbSet<CategoryEntity> Categories { get; set; }
 
-		//protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		//{
-		//	optionsBuilder.UseNpgsql("Host=ep-mute-pine-973397.eu-central-1.aws.neon.tech;Database=web-shop;Password=p7FbUj2HzGRf;Persist Security Info=True;Username=vladrewutsky01");
-		//	base.OnConfiguring(optionsBuilder);
-		//}
-		//protected override void OnModelCreating(ModelBuilder modelBuilder)
-		//{
-		//    modelBuilder.Entity<Product>(e=>e.ToTable("products"));
-		//	base.OnModelCreating(modelBuilder);
-		//}
+		protected override void OnModelCreating(ModelBuilder builder)
+		{
+			base.OnModelCreating(builder);
+			builder.Entity<UserRoleEntity>(ur =>
+			{
+				ur.HasKey(ur => new { ur.UserId, ur.RoleId });
 
-		//public DbSet<Product> Products { get; set; }
+				ur.HasOne(ur => ur.Role)
+					.WithMany(r => r.UserRoles)
+					.HasForeignKey(r => r.RoleId)
+					.IsRequired();
+
+				ur.HasOne(ur => ur.User)
+					.WithMany(r => r.UserRoles)
+					.HasForeignKey(u => u.UserId)
+					.IsRequired();
+			});
+		}
 	}
 }

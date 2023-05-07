@@ -33,6 +33,18 @@ namespace WebShop.Controllers
 
 			return Ok(model);
 		}
+		[HttpGet("{id}")]
+		public async Task<IActionResult> GetById(int id)
+		{
+			var model = await _appEFContext.Categories
+				.Where(x => x.IsDeleted == false && x.Id == id)
+				.Select(x => _mapper.Map<CategoryItemViewModel>(x))
+				.ToListAsync();
+			if (model.Count == 0)
+				return NotFound();
+
+			return Ok(model[0]);
+		}
 		[HttpPost("create")]
 		public async Task<IActionResult> Create([FromBody] CategoryCreateItemVM model)
 		{
@@ -50,18 +62,29 @@ namespace WebShop.Controllers
 				return BadRequest(new { error = ex.Message });
 			}
 		}
-		[HttpDelete("delete")]
-		public async Task<IActionResult> Delete(int id)
+
+		[HttpPut("edit")]
+		public async Task<IActionResult> Edit([FromBody] CategoryEditItemVM model)
 		{
 			try
 			{
-				CategoryEntity model = _appEFContext.Categories
-				.Where(x => x.Id == id)
-				.OrderBy(x => x.Priority)
-				.Last();
-				_appEFContext.Categories.Remove(model);
-				_appEFContext.SaveChangesAsync();
-				return Ok("Item deleted");
+				var cat = await _appEFContext.Categories.FindAsync(model.Id);
+				if(cat == null)
+					return NotFound();
+				else
+				{
+					cat.Name = model.Name;
+					cat.Description = model.Description;
+					cat.Priority = model.Priority;
+					if(!string.IsNullOrEmpty(model.ImageBase64))
+					{
+						ImageWorker.RemoveImage(cat.Image);
+						cat.Image = ImageWorker.SaveImage(model.ImageBase64);
+					}
+					_appEFContext.Categories.Update(cat);
+					await _appEFContext.SaveChangesAsync();
+					return Ok(_mapper.Map<CategoryItemViewModel>(cat));
+				}
 			}
 			catch (Exception ex)
 			{
@@ -69,15 +92,17 @@ namespace WebShop.Controllers
 				return BadRequest(new { error = ex.Message });
 			}
 		}
-		[HttpPut("edit/{id}")]
-		public async Task<IActionResult> Edit(int id, [FromBody] CategoryCreateItemVM model)
+		[HttpDelete("{id}")]
+		public async Task<IActionResult> Delete(int id)
 		{
 			try
 			{
 				var cat = await _appEFContext.Categories.FindAsync(id);
-				_mapper.Map(model, cat);
-				await _appEFContext.SaveChangesAsync();
-				return Ok("Saved successfully");
+				if(cat == null)
+					return NotFound();
+				cat.IsDeleted = true;
+				_appEFContext.SaveChanges();
+				return Ok("Item deleted");
 			}
 			catch (Exception ex)
 			{

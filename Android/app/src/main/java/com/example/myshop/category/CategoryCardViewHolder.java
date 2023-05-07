@@ -1,6 +1,7 @@
 package com.example.myshop.category;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,11 +14,14 @@ public class CategoryCardViewHolder extends RecyclerView.ViewHolder {
     private ImageView categoryImage;
     private TextView categoryName;
 
+    private Button btnDelete;
+
     //отримуємо та встановлюємо данні в ImageView та TextView
     public CategoryCardViewHolder(@NonNull View itemView) {
         super(itemView);
         categoryName=itemView.findViewById(R.id.categoryName);
         categoryImage=itemView.findViewById(R.id.categoryImage);
+        btnDelete=itemView.findViewById(R.id.btnDelete);
     }
 
     public ImageView getCategoryImage() {
@@ -26,5 +30,9 @@ public class CategoryCardViewHolder extends RecyclerView.ViewHolder {
 
     public TextView getCategoryName() {
         return categoryName;
+    }
+
+    public Button getBtnDelete() {
+        return btnDelete;
     }
 }

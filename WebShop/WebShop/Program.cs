@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using WebShop.Data;
+using WebShop.Data.Entities.Identity;
 using WebShop.Mapper;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +20,16 @@ builder.Services.AddAutoMapper(typeof(AppMapProfile));
 
 builder.Services.AddDbContext<AppEFContext>(options =>
 	options.UseNpgsql(builder.Configuration.GetConnectionString("MyConnectionDB")));
+
+builder.Services.AddIdentity<UserEntity, RoleEntity>(options =>
+{
+	options.Stores.MaxLengthForKeys = 128;
+	options.Password.RequireDigit = false;
+	options.Password.RequiredLength = 5;
+	options.Password.RequireNonAlphanumeric = false;
+	options.Password.RequireUppercase = false;
+	options.Password.RequireLowercase = false;
+}).AddEntityFrameworkStores<AppEFContext>().AddDefaultTokenProviders();
 //string connectionStr = builder.Configuration.GetConnectionString("NeonTech");
 //builder.Services.AddDbContext<AndroidDbContext>(options => options.UseNpgsql(connectionStr));
 

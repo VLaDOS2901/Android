@@ -1,7 +1,5 @@
 package com.example.myshop.category;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -16,7 +14,7 @@ import com.example.myshop.ChangeImageActivity;
 import com.example.myshop.MainActivity;
 import com.example.myshop.R;
 import com.example.myshop.dto.category.CategoryCreateDTO;
-import com.example.myshop.service.CategoryNetwork;
+import com.example.myshop.service.ApplicationNetwork;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.ByteArrayOutputStream;
@@ -71,8 +69,8 @@ public class CategoryCreateActivity extends BaseActivity {
         //перевіряємо чи поля не пусті
         if(validate())
         {
-            CategoryNetwork.getInstance()
-                    .getJsonApi()
+            ApplicationNetwork.getInstance()
+                    .getCategoriesApi()
                     .create(model)
                     .enqueue(new Callback<Void>() {
                         @Override
