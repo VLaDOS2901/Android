@@ -58,11 +58,13 @@ public class MainActivity extends BaseActivity {
                 .enqueue(new Callback<List<CategoryItemDTO>>() {
                     @Override
                     public void onResponse(Call<List<CategoryItemDTO>> call, Response<List<CategoryItemDTO>> response) {
-                        List<CategoryItemDTO> list = response.body();
-                        //встановлюємо список в адаптер
-                        adapter = new CategoriesAdapter(list, MainActivity.this::onClickDelete);
-                        //відображаємо всі категорії
-                        rc.setAdapter(adapter);
+                        if(response.isSuccessful()){
+                            List<CategoryItemDTO> list = response.body();
+                            //встановлюємо список в адаптер
+                            adapter = new CategoriesAdapter(list, MainActivity.this::onClickDelete);
+                            //відображаємо всі категорії
+                            rc.setAdapter(adapter);
+                        }
                     }
 
                     @Override
